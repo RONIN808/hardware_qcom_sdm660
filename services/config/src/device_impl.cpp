@@ -234,6 +234,10 @@ void DeviceImpl::DeviceClientContext::ParseIsDisplayConnected(const ByteStream &
   bool connected = false;
   ByteStream output_params;
 
+  if (input_params.size() != sizeof(DisplayType)) {
+    _hidl_cb(-ENODATA, {}, {});
+    return;
+  }
   const uint8_t *data = input_params.data();
   dpy = reinterpret_cast<const DisplayType*>(data);
   int32_t error = intf_->IsDisplayConnected(*dpy, &connected);
@@ -247,6 +251,11 @@ void DeviceImpl::DeviceClientContext::ParseSetDisplayStatus(const ByteStream &in
                                                             perform_cb _hidl_cb) {
   const struct StatusParams *display_status;
   const uint8_t *data = input_params.data();
+
+  if (input_params.size() != sizeof(StatusParams)) {
+    _hidl_cb(-ENODATA, {}, {});
+    return;
+  }
   display_status = reinterpret_cast<const StatusParams*>(data);
   int32_t error = intf_->SetDisplayStatus(display_status->dpy,
                                           display_status->status);
@@ -257,6 +266,11 @@ void DeviceImpl::DeviceClientContext::ParseConfigureDynRefreshRate(const ByteStr
                                                                    perform_cb _hidl_cb) {
   const struct DynRefreshRateParams *dyn_refresh_data;
   const uint8_t *data = input_params.data();
+
+  if (input_params.size() != sizeof(DynRefreshRateParams)) {
+    _hidl_cb(-ENODATA, {}, {});
+    return;
+  }
   dyn_refresh_data = reinterpret_cast<const DynRefreshRateParams*>(data);
   int32_t error = intf_->ConfigureDynRefreshRate(dyn_refresh_data->op,
                                                  dyn_refresh_data->refresh_rate);
@@ -274,6 +288,10 @@ void DeviceImpl::DeviceClientContext::ParseGetConfigCount(const ByteStream &inpu
     return;
   }
 
+  if (input_params.size() != sizeof(DisplayType)) {
+    _hidl_cb(-ENODATA, {}, {});
+    return;
+  }
   const uint8_t *data = input_params.data();
   dpy = reinterpret_cast<const DisplayType*>(data);
   int32_t error = intf_->GetConfigCount(*dpy, &count);
@@ -288,6 +306,10 @@ void DeviceImpl::DeviceClientContext::ParseGetActiveConfig(const ByteStream &inp
   uint32_t config = 0;
   ByteStream output_params;
 
+  if (input_params.size() != sizeof(DisplayType)) {
+    _hidl_cb(-ENODATA, {}, {});
+    return;
+  }
   const uint8_t *data = input_params.data();
   dpy = reinterpret_cast<const DisplayType*>(data);
   int32_t error = intf_->GetActiveConfig(*dpy, &config);
@@ -300,6 +322,10 @@ void DeviceImpl::DeviceClientContext::ParseSetActiveConfig(const ByteStream &inp
                                                            perform_cb _hidl_cb) {
   const struct ConfigParams *set_active_cfg_data;
 
+  if (input_params.size() != sizeof(ConfigParams)) {
+    _hidl_cb(-ENODATA, {}, {});
+    return;
+  }
   const uint8_t *data = input_params.data();
   set_active_cfg_data = reinterpret_cast<const ConfigParams*>(data);
   int32_t error = intf_->SetActiveConfig(set_active_cfg_data->dpy,
@@ -314,6 +340,10 @@ void DeviceImpl::DeviceClientContext::ParseGetDisplayAttributes(const ByteStream
   ByteStream output_params;
   int32_t error = -EINVAL;
 
+  if (input_params.size() != sizeof(AttributesParams)) {
+    _hidl_cb(-ENODATA, {}, {});
+    return;
+  }
   const uint8_t *data = input_params.data();
   get_disp_attr_data = reinterpret_cast<const AttributesParams*>(data);
   error = intf_->GetDisplayAttributes(get_disp_attr_data->config_index, get_disp_attr_data->dpy,
@@ -328,6 +358,10 @@ void DeviceImpl::DeviceClientContext::ParseSetPanelBrightness(const ByteStream &
   const uint32_t *level;
   int32_t error = 0;
 
+  if (input_params.size() != sizeof(uint32_t)) {
+    _hidl_cb(-ENODATA, {}, {});
+    return;
+  }
   const uint8_t *data = input_params.data();
   level = reinterpret_cast<const uint32_t*>(data);
   error = intf_->SetPanelBrightness(*level);
@@ -353,6 +387,10 @@ void DeviceImpl::DeviceClientContext::ParseMinHdcpEncryptionLevelChanged(
   const struct MinHdcpEncLevelChangedParams *min_hdcp_enc_level_data;
   int32_t error = 0;
 
+  if (input_params.size() != sizeof(MinHdcpEncLevelChangedParams)) {
+    _hidl_cb(-ENODATA, {}, {});
+    return;
+  }
   const uint8_t *data = input_params.data();
   min_hdcp_enc_level_data = reinterpret_cast<const MinHdcpEncLevelChangedParams*>(data);
   error = intf_->MinHdcpEncryptionLevelChanged(min_hdcp_enc_level_data->dpy,
@@ -371,6 +409,10 @@ void DeviceImpl::DeviceClientContext::ParseControlPartialUpdate(const ByteStream
   const struct PartialUpdateParams *partial_update_data;
   int32_t error = 0;
 
+  if (input_params.size() != sizeof(PartialUpdateParams)) {
+    _hidl_cb(-ENODATA, {}, {});
+    return;
+  }
   const uint8_t *data = input_params.data();
   partial_update_data = reinterpret_cast<const PartialUpdateParams*>(data);
   error = intf_->ControlPartialUpdate(partial_update_data->dpy, partial_update_data->enable);
@@ -383,6 +425,10 @@ void DeviceImpl::DeviceClientContext::ParseToggleScreenUpdate(const ByteStream &
   const bool *on;
   int32_t error = 0;
 
+  if (input_params.size() != sizeof(bool)) {
+    _hidl_cb(-ENODATA, {}, {});
+    return;
+  }
   const uint8_t *data = input_params.data();
   on = reinterpret_cast<const bool*>(data);
   error = intf_->ToggleScreenUpdate(on);
@@ -394,6 +440,10 @@ void DeviceImpl::DeviceClientContext::ParseSetIdleTimeout(const ByteStream &inpu
                                                           perform_cb _hidl_cb) {
   const uint32_t *timeout_value;
 
+  if (input_params.size() != sizeof(uint32_t)) {
+    _hidl_cb(-ENODATA, {}, {});
+    return;
+  }
   const uint8_t *data = input_params.data();
   timeout_value = reinterpret_cast<const uint32_t*>(data);
   int32_t error = intf_->SetIdleTimeout(*timeout_value);
@@ -409,6 +459,10 @@ void DeviceImpl::DeviceClientContext::ParseGetHdrCapabilities(const ByteStream &
   int32_t *data_output;
   int32_t error = -EINVAL;
 
+  if (input_params.size() != sizeof(DisplayType)) {
+    _hidl_cb(-ENODATA, {}, {});
+    return;
+  }
   const uint8_t *data = input_params.data();
   dpy = reinterpret_cast<const DisplayType*>(data);
   error = intf_->GetHDRCapabilities(*dpy, &hdr_caps);
@@ -438,6 +492,10 @@ void DeviceImpl::DeviceClientContext::ParseSetCameraLaunchStatus(const ByteStrea
                                                                  perform_cb _hidl_cb) {
   const uint32_t *launch_status_data;
 
+  if (input_params.size() != sizeof(uint32_t)) {
+    _hidl_cb(-ENODATA, {}, {});
+    return;
+  }
   const uint8_t *data = input_params.data();
   launch_status_data = reinterpret_cast<const uint32_t*>(data);
 
@@ -450,6 +508,10 @@ void DeviceImpl::DeviceClientContext::ParseSetCameraSmoothInfo(const ByteStream 
                                                            perform_cb _hidl_cb) {
   const CameraSmoothInfo *camera_info;
 
+  if (input_params.size() != sizeof(CameraSmoothInfo)) {
+    _hidl_cb(-ENODATA, {}, {});
+    return;
+  }
   const uint8_t *data = input_params.data();
   camera_info = reinterpret_cast<const CameraSmoothInfo*>(data);
   int32_t error = intf_->SetCameraSmoothInfo(camera_info->op, camera_info->fps);
@@ -460,6 +522,10 @@ void DeviceImpl::DeviceClientContext::ParseControlCameraSmoothCallback(const Byt
                                                                 perform_cb _hidl_cb) {
   const bool *enable;
 
+  if (input_params.size() != sizeof(bool)) {
+    _hidl_cb(-ENODATA, {}, {});
+    return;
+  }
   const uint8_t *data = input_params.data();
   enable = reinterpret_cast<const bool*>(data);
 
@@ -483,6 +549,10 @@ void DeviceImpl::DeviceClientContext::ParseSetDisplayAnimating(const ByteStream 
                                                                perform_cb _hidl_cb) {
   const struct AnimationParams *display_animating_data;
 
+  if (input_params.size() != sizeof(AnimationParams)) {
+    _hidl_cb(-ENODATA, {}, {});
+    return;
+  }
   const uint8_t *data = input_params.data();
   display_animating_data = reinterpret_cast<const AnimationParams*>(data);
   int32_t error = intf_->SetDisplayAnimating(display_animating_data->display_id,
@@ -495,6 +565,10 @@ void DeviceImpl::DeviceClientContext::ParseControlIdlePowerCollapse(const ByteSt
                                                                     perform_cb _hidl_cb) {
   const struct IdlePcParams *idle_pc_data;
 
+  if (input_params.size() != sizeof(IdlePcParams)) {
+    _hidl_cb(-ENODATA, {}, {});
+    return;
+  }
   const uint8_t *data = input_params.data();
   idle_pc_data = reinterpret_cast<const IdlePcParams*>(data);
   int32_t error = intf_->ControlIdlePowerCollapse(idle_pc_data->enable, idle_pc_data->synchronous);
@@ -516,6 +590,10 @@ void DeviceImpl::DeviceClientContext::ParseSetDisplayDppsAdRoi(const ByteStream 
                                                                perform_cb _hidl_cb) {
   const struct DppsAdRoiParams *ad_roi_data;
 
+  if (input_params.size() != sizeof(DppsAdRoiParams)) {
+    _hidl_cb(-ENODATA, {}, {});
+    return;
+  }
   const uint8_t *data = input_params.data();
   ad_roi_data = reinterpret_cast<const DppsAdRoiParams*>(data);
 
@@ -541,6 +619,10 @@ void DeviceImpl::DeviceClientContext::ParseSetPowerMode(const ByteStream &input_
                                                         perform_cb _hidl_cb) {
   const struct PowerModeParams *set_power_mode_data;
 
+  if (input_params.size() != sizeof(PowerModeParams)) {
+    _hidl_cb(-ENODATA, {}, {});
+    return;
+  }
   const uint8_t *data = input_params.data();
   set_power_mode_data = reinterpret_cast<const PowerModeParams*>(data);
   int32_t error = intf_->SetPowerMode(set_power_mode_data->disp_id,
@@ -551,6 +633,10 @@ void DeviceImpl::DeviceClientContext::ParseSetPowerMode(const ByteStream &input_
 void DeviceImpl::DeviceClientContext::ParseIsPowerModeOverrideSupported(
                                       const ByteStream &input_params,
                                       perform_cb _hidl_cb) {
+  if (input_params.size() != sizeof(uint32_t)) {
+    _hidl_cb(-ENODATA, {}, {});
+    return;
+  }
   const uint8_t *data = input_params.data();
   const uint32_t *disp_id = reinterpret_cast<const uint32_t*>(data);
   bool supported = false;
@@ -564,6 +650,10 @@ void DeviceImpl::DeviceClientContext::ParseIsPowerModeOverrideSupported(
 
 void DeviceImpl::DeviceClientContext::ParseIsHdrSupported(const ByteStream &input_params,
                                                           perform_cb _hidl_cb) {
+  if (input_params.size() != sizeof(uint32_t)) {
+    _hidl_cb(-ENODATA, {}, {});
+    return;
+  }
   const uint8_t *data = input_params.data();
   const uint32_t *disp_id = reinterpret_cast<const uint32_t*>(data);
   bool supported = false;
@@ -577,6 +667,10 @@ void DeviceImpl::DeviceClientContext::ParseIsHdrSupported(const ByteStream &inpu
 
 void DeviceImpl::DeviceClientContext::ParseIsWcgSupported(const ByteStream &input_params,
                                                           perform_cb _hidl_cb) {
+  if (input_params.size() != sizeof(int32_t)) {
+    _hidl_cb(-ENODATA, {}, {});
+    return;
+  }
   const uint8_t *data = input_params.data();
   const int32_t *disp_id = reinterpret_cast<const int32_t*>(data);
   bool supported = false;
@@ -592,6 +686,10 @@ void DeviceImpl::DeviceClientContext::ParseSetLayerAsMask(const ByteStream &inpu
                                                           perform_cb _hidl_cb) {
   const struct LayerMaskParams *layer_mask_data;
 
+  if (input_params.size() != sizeof(LayerMaskParams)) {
+    _hidl_cb(-ENODATA, {}, {});
+    return;
+  }
   const uint8_t *data = input_params.data();
   layer_mask_data = reinterpret_cast<const LayerMaskParams*>(data);
   int32_t error = intf_->SetLayerAsMask(layer_mask_data->disp_id, layer_mask_data->layer_id);
@@ -604,6 +702,10 @@ void DeviceImpl::DeviceClientContext::ParseGetDebugProperty(const ByteStream &in
   std::string value;
   ByteStream output_params;
 
+  if (input_params.size() == 0) {
+    _hidl_cb(-ENODATA, {}, {});
+     return;
+  }
   const uint8_t *data = input_params.data();
   const char *name = reinterpret_cast<const char *>(data);
   std::string prop_name(name);
@@ -631,6 +733,10 @@ void DeviceImpl::DeviceClientContext::ParseSetPanelLuminanceAttributes(
                                       perform_cb _hidl_cb) {
   const struct PanelLumAttrParams *panel_lum_attr_data;
 
+  if (input_params.size() != sizeof(PanelLumAttrParams)) {
+    _hidl_cb(-ENODATA, {}, {});
+    return;
+  }
   const uint8_t *data = input_params.data();
   panel_lum_attr_data = reinterpret_cast<const PanelLumAttrParams*>(data);
   int32_t error = intf_->SetPanelLuminanceAttributes(panel_lum_attr_data->disp_id,
@@ -646,6 +752,10 @@ void DeviceImpl::DeviceClientContext::ParseIsBuiltinDisplay(const ByteStream &in
   bool is_builtin = false;
   ByteStream output_params;
 
+  if (input_params.size() != sizeof(uint32_t)) {
+    _hidl_cb(-ENODATA, {}, {});
+    return;
+  }
   const uint8_t *data = input_params.data();
   disp_id = reinterpret_cast<const uint32_t*>(data);
   int32_t error = intf_->IsBuiltInDisplay(*disp_id, &is_builtin);
@@ -661,6 +771,10 @@ void DeviceImpl::DeviceClientContext::ParseSetCwbOutputBuffer(uint64_t clientHan
                                                               perform_cb _hidl_cb) {
   const struct CwbBufferParams *cwb_buffer_data;
 
+  if (input_params.size() != sizeof(CwbBufferParams)) {
+    _hidl_cb(-ENODATA, {}, {});
+    return;
+  }
   const uint8_t *data = input_params.data();
   cwb_buffer_data = reinterpret_cast<const CwbBufferParams*>(data);
   hidl_handle buffer = input_handles[0];
@@ -683,6 +797,10 @@ void DeviceImpl::DeviceClientContext::ParseGetSupportedDsiBitclks(const ByteStre
   std::vector<uint64_t> bit_clks;
   uint64_t *bit_clks_data;
 
+  if (input_params.size() != sizeof(uint32_t)) {
+    _hidl_cb(-ENODATA, {}, {});
+    return;
+  }
   const uint8_t *data = input_params.data();
   disp_id = reinterpret_cast<const uint32_t*>(data);
   int32_t error = intf_->GetSupportedDSIBitClks(*disp_id, &bit_clks);
@@ -706,6 +824,10 @@ void DeviceImpl::DeviceClientContext::ParseGetDsiClk(const ByteStream &input_par
   uint64_t bit_clk = 0;
   ByteStream output_params;
 
+  if (input_params.size() != sizeof(uint32_t)) {
+    _hidl_cb(-ENODATA, {}, {});
+    return;
+  }
   const uint8_t *data = input_params.data();
   disp_id = reinterpret_cast<const uint32_t*>(data);
   int32_t error = intf_->GetDSIClk(*disp_id, &bit_clk);
@@ -719,6 +841,10 @@ void DeviceImpl::DeviceClientContext::ParseSetDsiClk(const ByteStream &input_par
                                                      perform_cb _hidl_cb) {
   const struct DsiClkParams *set_dsi_clk_data;
 
+  if (input_params.size() != sizeof(DsiClkParams)) {
+    _hidl_cb(-ENODATA, {}, {});
+    return;
+  }
   const uint8_t *data = input_params.data();
   set_dsi_clk_data = reinterpret_cast<const DsiClkParams*>(data);
   int32_t error = intf_->SetDSIClk(set_dsi_clk_data->disp_id, set_dsi_clk_data->bit_clk);
@@ -729,6 +855,10 @@ void DeviceImpl::DeviceClientContext::ParseSetQsyncMode(const ByteStream &input_
                                                         perform_cb _hidl_cb) {
   const struct QsyncModeParams *set_qsync_mode_data;
 
+  if (input_params.size() != sizeof(QsyncModeParams)) {
+    _hidl_cb(-ENODATA, {}, {});
+    return;
+  }
   const uint8_t *data = input_params.data();
   set_qsync_mode_data = reinterpret_cast<const QsyncModeParams*>(data);
   int32_t error = intf_->SetQsyncMode(set_qsync_mode_data->disp_id, set_qsync_mode_data->mode);
@@ -741,6 +871,10 @@ void DeviceImpl::DeviceClientContext::ParseIsSmartPanelConfig(const ByteStream &
   bool is_smart = false;
   ByteStream output_params;
 
+  if (input_params.size() != sizeof(SmartPanelCfgParams)) {
+    _hidl_cb(-ENODATA, {}, {});
+    return;
+  }
   const uint8_t *data = input_params.data();
   smart_panel_cfg_data = reinterpret_cast<const SmartPanelCfgParams*>(data);
   int32_t error = intf_->IsSmartPanelConfig(smart_panel_cfg_data->disp_id,
@@ -765,6 +899,10 @@ void DeviceImpl::DeviceClientContext::ParseCreateVirtualDisplay(const ByteStream
                                                                 perform_cb _hidl_cb) {
   const struct VdsParams *vds_input_data;
 
+  if (input_params.size() != sizeof(VdsParams)) {
+    _hidl_cb(-ENODATA, {}, {});
+    return;
+  }
   const uint8_t *data = input_params.data();
   vds_input_data = reinterpret_cast<const VdsParams*>(data);
 
@@ -780,6 +918,10 @@ void DeviceImpl::DeviceClientContext::ParseIsRotatorSupportedFormat(const ByteSt
   bool supported = false;
   ByteStream output_params;
 
+  if (input_params.size() != sizeof(RotatorFormatParams)) {
+    _hidl_cb(-ENODATA, {}, {});
+    return;
+  }
   const uint8_t *data = input_params.data();
   input_data = reinterpret_cast<const RotatorFormatParams*>(data);
   int32_t error = intf_->IsRotatorSupportedFormat(input_data->hal_format, input_data->ubwc,
@@ -795,6 +937,10 @@ void DeviceImpl::DeviceClientContext::ParseControlQsyncCallback(uint64_t client_
                                                                 perform_cb _hidl_cb) {
   const bool *enable;
 
+  if (input_params.size() != sizeof(bool)) {
+    _hidl_cb(-ENODATA, {}, {});
+    return;
+  }
   const uint8_t *data = input_params.data();
   enable = reinterpret_cast<const bool*>(data);
 
@@ -808,6 +954,10 @@ void DeviceImpl::DeviceClientContext::ParseControlIdleStatusCallback(uint64_t cl
                                                                      perform_cb _hidl_cb) {
   const bool *enable;
 
+  if (input_params.size() != sizeof(bool)) {
+    _hidl_cb(-ENODATA, {}, {});
+    return;
+  }
   const uint8_t *data = input_params.data();
   enable = reinterpret_cast<const bool*>(data);
 
@@ -821,6 +971,10 @@ void DeviceImpl::DeviceClientContext::ParseSendTUIEvent(const ByteStream &input_
   const struct TUIEventParams *input_data =
                reinterpret_cast<const TUIEventParams*>(input_params.data());
 
+  if (input_params.size() != sizeof(TUIEventParams)) {
+    _hidl_cb(-ENODATA, {}, {});
+    return;
+  }
   int32_t error = intf_->SendTUIEvent(input_data->dpy, input_data->tui_event_type);
 
   _hidl_cb(error, {}, {});
@@ -852,6 +1006,10 @@ void DeviceImpl::DeviceClientContext::ParseGetDisplayHwId(const ByteStream &inpu
   uint32_t disp_hw_id = 0;
   ByteStream output_params;
 
+  if (input_params.size() != sizeof(uint32_t)) {
+    _hidl_cb(-ENODATA, {}, {});
+    return;
+  }
   const uint8_t *data = input_params.data();
   const uint32_t *disp_id = reinterpret_cast<const uint32_t*>(data);
   int32_t error = intf_->GetDisplayHwId(*disp_id, &disp_hw_id);
@@ -865,6 +1023,10 @@ void DeviceImpl::DeviceClientContext::ParseGetSupportedDisplayRefreshRates(
   ByteStream output_params;
   std::vector<uint32_t> refresh_rates;
 
+  if (input_params.size() != sizeof(DisplayType)) {
+    _hidl_cb(-ENODATA, {}, {});
+    return;
+  }
   const uint8_t *data = input_params.data();
   const DisplayType *dpy = reinterpret_cast<const DisplayType *>(data);
   int32_t error = intf_->GetSupportedDisplayRefreshRates(*dpy, &refresh_rates);
@@ -886,6 +1048,11 @@ void DeviceImpl::DeviceClientContext::ParseGetSupportedDisplayRefreshRates(
 void DeviceImpl::DeviceClientContext::ParseIsRCSupported(const ByteStream &input_params,
                                                          perform_cb _hidl_cb) {
   const uint8_t *data = input_params.data();
+
+  if (input_params.size() != sizeof(uint32_t)) {
+    _hidl_cb(-ENODATA, {}, {});
+    return;
+  }
   const uint32_t *disp_id = reinterpret_cast<const uint32_t*>(data);
   bool supported = false;
   int32_t error = intf_->IsRCSupported(*disp_id, &supported);
@@ -903,6 +1070,11 @@ void DeviceImpl::DeviceClientContext::ParseIsSupportedConfigSwitch(const ByteStr
   }
 
   const struct SupportedModesParams *supported_modes_data;
+
+  if (input_params.size() != sizeof(SupportedModesParams)) {
+    _hidl_cb(-ENODATA, {}, {});
+    return;
+  }
   const uint8_t *data = input_params.data();
   bool supported = false;
   ByteStream output_params;
@@ -916,6 +1088,10 @@ void DeviceImpl::DeviceClientContext::ParseIsSupportedConfigSwitch(const ByteStr
 
 void DeviceImpl::DeviceClientContext::ParseGetDisplayType(const ByteStream &input_params,
                                                           perform_cb _hidl_cb) {
+  if (input_params.size() != sizeof(uint64_t)) {
+    _hidl_cb(-ENODATA, {}, {});
+    return;
+  }
   const uint8_t *data = input_params.data();
   const uint64_t *physical_disp_id = reinterpret_cast<const uint64_t*>(data);
   DisplayType disp_type = DisplayConfig::DisplayType::kInvalid;
@@ -933,6 +1109,10 @@ void DeviceImpl::DeviceClientContext::ParseAllowIdleFallback(perform_cb _hidl_cb
 
 void DeviceImpl::DeviceClientContext::ParseGetDisplayTileCount(const ByteStream &input_params,
                                                                perform_cb _hidl_cb) {
+  if (input_params.size() != sizeof(uint64_t)) {
+    _hidl_cb(-ENODATA, {}, {});
+    return;
+  }
   const uint64_t *data = reinterpret_cast<const uint64_t*>(input_params.data());
   uint64_t physical_disp_id = data ? *data : 0;
   uint32_t num_tiles[2] = {0, 0};
@@ -949,6 +1129,10 @@ void DeviceImpl::DeviceClientContext::ParseSetPowerModeTiled(const ByteStream &i
                                                              perform_cb _hidl_cb) {
   struct PowerModeTiledParams set_power_mode_tiled_data = {};
 
+  if (input_params.size() != sizeof(PowerModeTiledParams)) {
+    _hidl_cb(-ENODATA, {}, {});
+    return;
+  }
   const uint8_t *data = input_params.data();
   if (data) {
     set_power_mode_tiled_data = *reinterpret_cast<const PowerModeTiledParams*>(data);
@@ -964,6 +1148,10 @@ void DeviceImpl::DeviceClientContext::ParseSetPanelBrightnessTiled(const ByteStr
                                                                    perform_cb _hidl_cb) {
   struct PanelBrightnessTiledParams set_panel_brightness_tiled_data = {};
 
+  if (input_params.size() != sizeof(PanelBrightnessTiledParams)) {
+    _hidl_cb(-ENODATA, {}, {});
+    return;
+  }
   const uint8_t *data = input_params.data();
   if (data) {
     set_panel_brightness_tiled_data = *reinterpret_cast<const PanelBrightnessTiledParams*>(data);
@@ -979,6 +1167,10 @@ void DeviceImpl::DeviceClientContext::ParseSetWiderModePreference(const ByteStre
                                                                   perform_cb _hidl_cb) {
   struct WiderModePrefParams set_wider_mode_pref_data = {};
 
+  if (input_params.size() != sizeof(WiderModePrefParams)) {
+    _hidl_cb(-ENODATA, {}, {});
+    return;
+  }
   const uint8_t *data = input_params.data();
   if (data) {
     set_wider_mode_pref_data = *reinterpret_cast<const WiderModePrefParams*>(data);
@@ -993,6 +1185,10 @@ void DeviceImpl::DeviceClientContext::ParseGetFSCRGBOrder(const ByteStream &inpu
   const DisplayType *dpy;
   ByteStream output_params;
 
+  if (input_params.size() != sizeof(DisplayType)) {
+    _hidl_cb(-ENODATA, {}, {});
+    return;
+  }
   const uint8_t *data = input_params.data();
   dpy = reinterpret_cast<const DisplayType*>(data);
 
@@ -1007,6 +1203,10 @@ void DeviceImpl::DeviceClientContext::ParseEnableCAC(const ByteStream &input_par
                                                      perform_cb _hidl_cb) {
   struct EnableCACParams enable_cac_data = {};
 
+  if (input_params.size() != sizeof(EnableCACParams)) {
+    _hidl_cb(-ENODATA, {}, {});
+    return;
+  }
   const uint8_t *data = input_params.data();
   if (data) {
     enable_cac_data = *reinterpret_cast<const EnableCACParams*>(data);
@@ -1021,6 +1221,10 @@ void DeviceImpl::DeviceClientContext::ParseSetCacEyeConfig(const ByteStream &inp
                                                            perform_cb _hidl_cb) {
   const struct CacEyeConfigParams *cac_eye_config_data = nullptr;
 
+  if (input_params.size() != sizeof(CacEyeConfigParams)) {
+    _hidl_cb(-ENODATA, {}, {});
+    return;
+  }
   const uint8_t *data = input_params.data();
   if (data) {
     cac_eye_config_data = reinterpret_cast<const CacEyeConfigParams*>(data);
@@ -1036,6 +1240,10 @@ void DeviceImpl::DeviceClientContext::ParseSetSkewVsync(const ByteStream &input_
                                                         perform_cb _hidl_cb) {
   struct SkewVsyncParams skew_vsync_data = {};
 
+  if (input_params.size() != sizeof(SkewVsyncParams)) {
+    _hidl_cb(-ENODATA, {}, {});
+    return;
+  }
   const uint8_t *data = input_params.data();
   if (data) {
     skew_vsync_data = *reinterpret_cast<const SkewVsyncParams*>(data);
